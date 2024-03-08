@@ -1,0 +1,1 @@
+rsconnect::deployApp('/data/statistics/')
