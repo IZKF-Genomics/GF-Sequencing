@@ -5,7 +5,7 @@ library(ggplot2)
 library(plotly)
 
 # Load your CSV data
-csv_data <- read.csv("sequencing_statistics.csv")
+csv_data <- read.csv("data/sequencing_statistics.csv")
 project_names <- unique(csv_data$Project.Name)
 
 # Define the UI
@@ -321,7 +321,7 @@ server <- function(input, output, session) {
   
   # Render the selected plot based on user input (Plot 6)
   output$selected_plot_6 <- renderPlotly({
-    render_selected_plot("Phix.Input.Percent", "Phix Input", filters$date_range_selected, filters$sequencer_selected, input$color_variable)
+    render_selected_plot("Phix.Input", "Phix Input", filters$date_range_selected, filters$sequencer_selected, input$color_variable)
   })
   
   # Render the selected plot based on user input (Plot 7)
@@ -396,7 +396,7 @@ server <- function(input, output, session) {
   
   # Function to render Table 3
   output$table_3 <- renderDT({
-    selected_columns <- c("Project.Name", "Protocol.Name", "Phix.Input.Percent","Phix.Output.Percent", "Phix.Barcode")  # Add the columns you want to display
+    selected_columns <- c("Project.Name", "Protocol.Name", "Phix.Input","Phix.Output.Percent", "Phix.Barcode")  # Add the columns you want to display
     datatable(
       filtered_data()[, selected_columns, drop = FALSE],
       options = list(

@@ -1,0 +1,8 @@
+data/sciebo/*
+*.pyc
+
+.Rproj.user
+*.Rproj
+r_scripts/.Rhistory
+
+*.log
