@@ -221,14 +221,23 @@ def parse_sciebo_xlsx_report(df, fastq_folder_name, report_path):
                         q_30 = str(q_30)
                     except BaseException:
                         logger.info(f"q_30 = {q_30} was not handled successfully")
-                elif type(excel_sheet_name_cell) == str and "phix" in excel_sheet_name_cell.lower():
+                elif type(excel_sheet_name_cell) == str and "Phix [%]" in excel_sheet_name_cell:
                     if (year, month, day) > (2024, 1, 16):
                         # The date is past 16.01.24 and the phix protocol is in place
                         phix_input = excel_sheet.cell(row=i, column=j+1).value
+                        if phix_input is None or phix_input == "":
+                            phix_input = excel_sheet.cell(row=i, column=j+2).value
                     else:
                         # No Protocol prior to the 16.01.24
                         phix_input = None
+                elif type(excel_sheet_name_cell) == str and "Sequencing Kit" in excel_sheet_name_cell:
+                    sequencing_kit = excel_sheet.cell(row=i, column=j+1).value
+                    if sequencing_kit is None or sequencing_kit == "":
+                            sequencing_kit = excel_sheet.cell(row=i, column=j+2).value
                 elif type(excel_sheet_name_cell) == str and "kit" in excel_sheet_name_cell.lower():
+                    if sequencing_kit is not None:
+                        # sequencing_kit was already found using the new template
+                        continue
                     # Find the position of ':' and get the substring after it
                     index_colon = excel_sheet_name_cell.find(':')
                     if index_colon != -1:
@@ -239,6 +248,10 @@ def parse_sciebo_xlsx_report(df, fastq_folder_name, report_path):
                     index_colon = excel_sheet_name_cell.find(':')
                     if index_colon != -1:
                         project_name = excel_sheet_name_cell[index_colon + 1:].strip()
+                    if project_name is None or project_name == "":
+                        project_name = excel_sheet.cell(row=i, column=j+1).value
+                    if project_name is None or project_name == "":
+                        project_name = excel_sheet.cell(row=i, column=j+2).value
 
     df.loc[fastq_folder_name, ['Sequencing Kit', 'Cycles Read 1', 'Cycles Index 1', 'Cycles Read 2', 'Cycles Index 2', 'Density', 'Clusters PF', 'Yields', 'Q 30', 'Name', 'Protocol Name', 'Application', 'Phix Input']] = [sequencing_kit, cycles_read_1, cycles_index_1, cycles_read_2, cycles_index_2, density, clusters_pf, yields, q_30, project_name, protocol_name, application, phix_input]
     df.loc[fastq_folder_name,"Sciebo Found"] = True

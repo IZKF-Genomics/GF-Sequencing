@@ -5,7 +5,7 @@ library(ggplot2)
 library(plotly)
 
 # Load your CSV data
-csv_data <- read.csv("data/sequencing_statistics.csv")
+csv_data <- read.csv("sequencing_statistics.csv")
 project_names <- unique(csv_data$Project.Name)
 
 # Define the UI

@@ -46,7 +46,7 @@ def main():
 
     # Post-process and clean up DataFrame
     df = postprocess_dataframe(df)
-    df.to_csv('data/sequencing_statistics.csv', index=True)
+    df.to_csv('r_scripts/sequencing_statistics.csv', index=True)
 
 def initialize_dataframe(folders, dates, sequencers):
     """
@@ -120,7 +120,7 @@ def postprocess_dataframe(df):
     :return: The post-processed DataFrame.
     """
     df["Total Read Count in Millions"] = pd.to_numeric(df["Total Read Count in Millions"], errors='coerce').round(2)
-    df['Expected Clusters'] = df['Sequencing Kit'].map(SEQUENCING_KIT_TO_CLUSTERS)
+    df['Expected Clusters'] = df['Sequencing Kit'].str.lower().map(SEQUENCING_KIT_TO_CLUSTERS)
     utils.calculate_ratios(df)
     utils.adjust_phix_percentages(df)
 

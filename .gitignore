@@ -5,4 +5,6 @@ data/sciebo/*
 *.Rproj
 r_scripts/.Rhistory
 
+.vscode/*
+
 *.log

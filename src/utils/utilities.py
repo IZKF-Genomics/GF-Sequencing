@@ -86,7 +86,7 @@ def calculate_ratios(df):
     total_read_count = df['Total Read Count in Millions'] * 1e6
     df['Ratio Total Read Count and Expected Cluster'] = (
         total_read_count /
-        df['Sequencing Kit'].map(SEQUENCING_KIT_TO_MAX_CLUSTERS)
+        df['Sequencing Kit'].str.lower().map(SEQUENCING_KIT_TO_MAX_CLUSTERS)
     ).round(2)
 
 def adjust_phix_percentages(df):
