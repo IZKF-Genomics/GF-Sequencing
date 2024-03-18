@@ -15,8 +15,8 @@ ui <- dashboardPage(
     selectInput("plot_type", "Choose Plot Type",
                 choices = c("Scatter Plot", "Bar Plot"),
                 selected = "Scatter Plot"),
-    dateRangeInput("date_range_filter", "Date Range Filter", start = "2022-01-01", end = format(Sys.Date(), "%Y-%m-%d")),
-    checkboxGroupInput("sequencer_filter", "Sequencer Filter", choices = unique(csv_data$Sequencer), selected = unique(csv_data$Sequencer)),
+    dateRangeInput("date_range_filter", "Date Range Filter", start = format(seq.Date(from = Sys.Date(), by = "-1 month", length.out = 6)[6], "%Y-%m-%d"), end = format(Sys.Date(), "%Y-%m-%d")),
+        checkboxGroupInput("sequencer_filter", "Sequencer Filter", choices = unique(csv_data$Sequencer), selected = unique(csv_data$Sequencer)),
     actionButton("reset_filters", "Reset Filters"),
     selectInput("color_variable", "Choose Color Variable", choices = colnames(csv_data), selected = "Application")
   ),
@@ -368,7 +368,8 @@ server <- function(input, output, session) {
       options = list(
         scrollY = "400px",  # Set the height of the scrollable area
         fixedColumns = TRUE,  # Enable fixed columns
-        scrollX = TRUE  # Enable horizontal scrolling
+        scrollX = TRUE,  # Enable horizontal scrolling
+        order = list(list(2, 'desc'))
       ),
       filter = 'top'  # Display filters at the top of the table
     )
@@ -388,7 +389,8 @@ server <- function(input, output, session) {
       options = list(
         scrollY = "400px",  # Set the height of the scrollable area
         fixedColumns = TRUE,  # Enable fixed columns
-        scrollX = TRUE  # Enable horizontal scrolling
+        scrollX = TRUE,  # Enable horizontal scrolling
+        order = list(list(2, 'desc'))
       ),
       filter = 'top'  # Display filters at the top of the table
     )
@@ -396,13 +398,14 @@ server <- function(input, output, session) {
   
   # Function to render Table 3
   output$table_3 <- renderDT({
-    selected_columns <- c("Project.Name", "Protocol.Name", "Phix.Input","Phix.Output.Percent", "Phix.Barcode")  # Add the columns you want to display
+    selected_columns <- c("Project.Name", "Protocol.Name", "Date", "Phix.Input","Phix.Output.Percent", "Phix.Barcode")  # Add the columns you want to display
     datatable(
       filtered_data()[, selected_columns, drop = FALSE],
       options = list(
         scrollY = "400px",  # Set the height of the scrollable area
         fixedColumns = TRUE,  # Enable fixed columns
-        scrollX = TRUE  # Enable horizontal scrolling
+        scrollX = TRUE,  # Enable horizontal scrolling
+        order = list(list(2, 'desc'))
       ),
       filter = 'top'  # Display filters at the top of the table
     )
@@ -410,13 +413,14 @@ server <- function(input, output, session) {
   
   # Function to render Table 4
   output$table_4 <- renderDT({
-    selected_columns <- c("Project.Name", "Sequencer", "Sequencing.Kit", "Cycles.Read.1", "Cycles.Index.1", "Cycles.Read.2", "Cycles.Index.2", "Density", "Clusters.PF", "Yields", "Q.30")  # Add the columns you want to display
+    selected_columns <- c("Project.Name", "Date", "Sequencer", "Sequencing.Kit", "Cycles.Read.1", "Cycles.Index.1", "Cycles.Read.2", "Cycles.Index.2", "Density", "Clusters.PF", "Yields", "Q.30")  # Add the columns you want to display
     datatable(
       filtered_data()[, selected_columns, drop = FALSE],
       options = list(
         scrollY = "400px",  # Set the height of the scrollable area
         fixedColumns = TRUE,  # Enable fixed columns
-        scrollX = TRUE  # Enable horizontal scrolling
+        scrollX = TRUE,  # Enable horizontal scrolling
+        order = list(list(1, 'desc'))
       ),
       filter = 'top'  # Display filters at the top of the table
     )
@@ -424,13 +428,14 @@ server <- function(input, output, session) {
   
   # Function to render Table 5
   output$table_5 <- renderDT({
-    selected_columns <- c("Project.Name", "Application", "Sequencing.Kit", "STD.in.Millions", "CV", "Number.of.Samples.Above.Requirement", "Number.of.Samples.Below.Requirement", "Total.Read.Count.in.Millions", "Expected.Clusters", "Ratio.Total.Read.Count.and.Expected.Cluster")  # Add the columns you want to display
+    selected_columns <- c("Project.Name", "Date", "Application", "Sequencing.Kit", "STD.in.Millions", "CV", "Number.of.Samples.Above.Requirement", "Number.of.Samples.Below.Requirement", "Total.Read.Count.in.Millions", "Expected.Clusters", "Ratio.Total.Read.Count.and.Expected.Cluster")  # Add the columns you want to display
     datatable(
       filtered_data()[, selected_columns, drop = FALSE],
       options = list(
         scrollY = "400px",  # Set the height of the scrollable area
         fixedColumns = TRUE,  # Enable fixed columns
-        scrollX = TRUE  # Enable horizontal scrolling
+        scrollX = TRUE,  # Enable horizontal scrolling
+        order = list(list(1, 'desc'))
       ),
       filter = 'top'  # Display filters at the top of the table
     )
@@ -438,13 +443,14 @@ server <- function(input, output, session) {
   
   # Function to render Table 6
   output$table_6 <- renderDT({
-    selected_columns <- c("Project.Name", "Undetermined.Reads.Percentage", "Most.Common.Undetermined.Barcode","Most.Common.Undetermined.Barcode.Percentage")  # Add the columns you want to display
+    selected_columns <- c("Project.Name", "Date", "Undetermined.Reads.Percentage", "Most.Common.Undetermined.Barcode","Most.Common.Undetermined.Barcode.Percentage")  # Add the columns you want to display
     datatable(
       filtered_data()[, selected_columns, drop = FALSE],
       options = list(
         scrollY = "400px",  # Set the height of the scrollable area
         fixedColumns = TRUE,  # Enable fixed columns
-        scrollX = TRUE  # Enable horizontal scrolling
+        scrollX = TRUE,  # Enable horizontal scrolling
+        order = list(list(1, 'desc'))
       ),
       filter = 'top'  # Display filters at the top of the table
     )
@@ -452,13 +458,14 @@ server <- function(input, output, session) {
   
   # Function to render Table 7
   output$table_7 <- renderDT({
-    selected_columns <- c("Project.Name", "Protocol.Name", "Sciebo.Found", "Application")  # Add the columns you want to display
+    selected_columns <- c("Project.Name", "Protocol.Name", "Date", "Sciebo.Found", "Application")
     datatable(
       filtered_data()[, selected_columns, drop = FALSE],
       options = list(
         scrollY = "400px",  # Set the height of the scrollable area
         fixedColumns = TRUE,  # Enable fixed columns
-        scrollX = TRUE  # Enable horizontal scrolling
+        scrollX = TRUE,  # Enable horizontal scrolling
+        order = list(list(2, 'desc'))
       ),
       filter = 'top'  # Display filters at the top of the table
     )

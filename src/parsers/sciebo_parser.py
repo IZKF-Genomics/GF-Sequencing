@@ -199,16 +199,16 @@ def parse_sciebo_xlsx_report(df, fastq_folder_name, report_path):
                     cycles_index_2 = excel_sheet.cell(row=i, column=j+1).value
                 elif excel_sheet_name_cell == "Cycles Read 2":
                     cycles_read_2 = excel_sheet.cell(row=i, column=j+1).value
-                elif excel_sheet_name_cell == "Density":
+                elif type(excel_sheet_name_cell) == str and  "Density" in excel_sheet_name_cell:
                     density = excel_sheet.cell(row=i, column=j+1).value
-                elif excel_sheet_name_cell == "Clusters PF":
+                elif type(excel_sheet_name_cell) == str and  "Clusters PF" in excel_sheet_name_cell:
                     clusters_pf = excel_sheet.cell(row=i, column=j+1).value
-                elif excel_sheet_name_cell == "Yield":
+                elif type(excel_sheet_name_cell) == str and "Yield" in excel_sheet_name_cell :
                     yields = excel_sheet.cell(row=i, column=j+1).value
                     if type(yields) is str:
                         yields = yields.replace(',', '.')
                         yields =''.join(char for char in yields if char.isdigit() or char == '.')
-                elif excel_sheet_name_cell == "% >= Q30":
+                elif type(excel_sheet_name_cell) == str and "Q30" in excel_sheet_name_cell:
                     q_30 = excel_sheet.cell(row=i, column=j+1).value
                     if q_30 is None:
                         continue
